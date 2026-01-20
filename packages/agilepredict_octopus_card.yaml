@@ -2,6 +2,8 @@
 # AgilePredict -> Octopus-style Rates Card
 # Single-file Home Assistant package
 # =========================================
+# IMPORTANT: Change the region code in the resource URL below to match your area
+# See: https://prices.fly.dev/api_how_to for all available regions
 
 input_number:
   agile_predict_day_offset:
@@ -16,7 +18,7 @@ sensor:
     name: Agile Predict
     resource: https://prices.fly.dev/api/A
     timeout: 30
-    scan_interval: 900
+    scan_interval: 3600
     value_template: "{{ value_json[0]['name'] }}"
     json_attributes_path: "$[0]"
     json_attributes:
