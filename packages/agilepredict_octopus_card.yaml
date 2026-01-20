@@ -1,0 +1,100 @@
+# =========================================
+# AgilePredict -> Octopus-style Rates Card
+# Single-file Home Assistant package
+# =========================================
+
+input_number:
+  agile_predict_day_offset:
+    name: AgilePredict Day Offset
+    min: 0
+    max: 7
+    step: 1
+    mode: slider
+
+sensor:
+  - platform: rest
+    name: Agile Predict
+    resource: https://prices.fly.dev/api/A
+    timeout: 30
+    scan_interval: 900
+    value_template: "{{ value_json[0]['name'] }}"
+    json_attributes_path: "$[0]"
+    json_attributes:
+      - created_at
+      - prices
+
+template:
+  - sensor:
+      - name: "AgilePredict Selected Day"
+        unique_id: agilepredict_selected_day
+        state: >
+          {% set off = states('input_number.agile_predict_day_offset') | int(0) %}
+          {{ (now().date() + timedelta(days=off)).isoformat() }}
+        attributes:
+          prices: >
+            {% set off = states('input_number.agile_predict_day_offset') | int(0) %}
+            {% set target_date = (now().date() + timedelta(days=off)) %}
+
+            {% set raw = state_attr('sensor.agile_predict', 'prices') or [] %}
+            {% set map = namespace(d={}) %}
+            {% for p in raw %}
+              {% set dtl = as_local(as_datetime(p.date_time)) %}
+              {% if dtl and dtl.date() == target_date %}
+                {% set k = dtl.strftime('%Y-%m-%d %H:%M') %}
+                {% set map.d = dict(map.d, **{ k: p }) %}
+              {% endif %}
+            {% endfor %}
+
+            {% set start = as_local(as_datetime(target_date.isoformat() ~ 'T00:00:00')) %}
+            {% set out = namespace(items=[]) %}
+            {% for i in range(0, 48) %}
+              {% set slot = start + timedelta(minutes=30*i) %}
+              {% set key = slot.strftime('%Y-%m-%d %H:%M') %}
+              {% set found = map.d.get(key) %}
+              {% if found %}
+                {% set out.items = out.items + [found] %}
+              {% else %}
+                {% set out.items = out.items + [{
+                  'date_time': slot.isoformat(),
+                  'agile_pred': none,
+                  'agile_low': none,
+                  'agile_high': none
+                }] %}
+              {% endif %}
+            {% endfor %}
+            {{ out.items }}
+
+      - name: "AgilePredict Rates (Selected Day)"
+        unique_id: agilepredict_rates_selected_day
+        icon: mdi:chart-line
+        state: >
+          {% set off = states('input_number.agile_predict_day_offset') | int(0) %}
+          {{ (now().date() + timedelta(days=off)).isoformat() }}
+        attributes:
+          # Provide both keys for card compatibility across versions
+          rates: >
+            {% set items = state_attr('sensor.agilepredict_selected_day','prices') or [] %}
+            {% set ns = namespace(out=[]) %}
+            {% for p in items %}
+              {% set dt = as_local(as_datetime(p.date_time)) %}
+              {% if dt %}
+                {% set start = dt.isoformat() %}
+                {% set end = (dt + timedelta(minutes=30)).isoformat() %}
+                {% set value = p.agile_pred %}
+                {% set ns.out = ns.out + [ {'start': start, 'end': end, 'value_inc_vat': value} ] %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.out }}
+          rate: >
+            {% set items = state_attr('sensor.agilepredict_selected_day','prices') or [] %}
+            {% set ns = namespace(out=[]) %}
+            {% for p in items %}
+              {% set dt = as_local(as_datetime(p.date_time)) %}
+              {% if dt %}
+                {% set start = dt.isoformat() %}
+                {% set end = (dt + timedelta(minutes=30)).isoformat() %}
+                {% set value = p.agile_pred %}
+                {% set ns.out = ns.out + [ {'start': start, 'end': end, 'value_inc_vat': value} ] %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.out }}
