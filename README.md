@@ -11,37 +11,12 @@ Show AgilePredict predicted half-hour electricity rates (up to 7 days) in Home A
 - YAML access to your HA config (File editor / VS Code add-on / Samba etc.)
 - Restart capability
 
-### 2. AgilePredict Sensor (REQUIRED)
-
-**You must set up the AgilePredict sensor first.** This card requires the sensor to be working.
-
-Follow the official setup instructions here:
-- **https://prices.fly.dev/api_how_to**
-
-Quick setup: Add this to your `configuration.yaml`:
-```yaml
-sensor:
-  - platform: rest
-    resource: https://prices.fly.dev/api/G
-    scan_interval: 3600
-    name: Agile Predict
-    value_template: "{{ value_json[0]['name']}}"
-    json_attributes_path: "$[0]"
-    json_attributes:
-      - "created_at"
-      - "prices"
-```
-
-**Important:** Change `/api/G` to your region code. See the API documentation link above for all available regions.
-
-After adding this, restart Home Assistant and verify the sensor exists in Developer Tools → States (`sensor.agile_predict`).
-
-### 3. HACS (recommended)
+### 2. HACS (recommended)
 
 Install HACS:
 - https://hacs.xyz/
 
-### 4. Install these cards (HACS → Frontend)
+### 3. Install these cards (HACS → Frontend)
 
 These are required for the UI:
 
@@ -66,21 +41,52 @@ Edit your configuration.yaml file and add the following:
 
 Save the file and restart Home Assistant.
 
-### 2) Copy the package file into your HA config folder
+### 2) Download and configure the package file
 
-Download the package file:
+The package file contains everything needed:
+- **AgilePredict REST sensor** - fetches forecast data from the API (default: Region A)
+- **Template sensors** - process the data for display
+- **Input number helper** - for day selection
+
+**Download the file:**
 
 1. Click here: [`packages/agilepredict_octopus_card.yaml`](packages/agilepredict_octopus_card.yaml)
-2. Click the "Raw" button (or right-click the link above and "Save Link As")
-3. Save the file
+2. Click the "Raw" button (or right-click and "Save Link As")
+3. Save to your computer
 
-Copy the downloaded file to your Home Assistant config folder as:
+**IMPORTANT - Change to your region:**
+
+Before copying to Home Assistant, you MUST edit the file to use your region:
+
+1. Open agilepredict_octopus_card.yaml in a text editor (Notepad, VS Code, etc.)
+2. Find this line (near the top of the file):
+
+    resource: https://prices.fly.dev/api/A
+
+3. Change /api/A to your region code:
+   - /api/A - National Average (default)
+   - /api/B - East Midlands
+   - /api/G - North West England
+   - /api/C - West Midlands
+   - See full list: https://prices.fly.dev/api_how_to
+
+4. Save the file
+
+**Copy to Home Assistant:**
+
+Copy the edited file to your Home Assistant config folder as:
 
     config/packages/agilepredict_octopus_card.yaml
 
 Then restart Home Assistant.
 
-**Note:** After restarting, the sensors and helper will be automatically created by the package. You don't need to configure them manually.
+**Verify it's working:**
+
+After restart, go to Developer Tools → States and check that these entities exist:
+- sensor.agile_predict (should show your region name)
+- sensor.agilepredict_selected_day
+- sensor.agilepredict_rates_selected_day
+- input_number.agile_predict_day_offset
 
 ### 3) Add the Lovelace card
 
