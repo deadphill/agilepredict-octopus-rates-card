@@ -29,12 +29,12 @@ https://prices.fly.dev/api/A
 Installation
 1) Enable packages in configuration.yaml
 If you already use packages, skip this step.
-Add this to your configuration.yaml file:
-homeassistant:
+Add this to your configuration.yaml:
+yamlhomeassistant:
   packages: !include_dir_merge_named packages/
 Then restart Home Assistant.
 2) Copy the package file into your HA config folder
-Download packages/agilepredict_octopus_card.yaml from this repo and copy it to your HA config folder as:
+Download packages/agilepredict_octopus_card.yaml from this repo and copy it to:
 config/packages/agilepredict_octopus_card.yaml
 Then restart Home Assistant.
 3) Add the Lovelace card
@@ -60,7 +60,12 @@ Troubleshooting
 The card doesn't feel "instant" when changing day
 Set cardRefreshIntervalSeconds: 1 in the Lovelace card YAML.
 Sensor goes unavailable sometimes
-The REST sensor includes timeout: 30 and scan_interval: 900 to reduce flapping.
+The REST sensor includes:
+
+timeout: 30
+scan_interval: 900
+
+to reduce flapping.
 
 Disclaimer
 Not affiliated with Octopus Energy or AgilePredict.
