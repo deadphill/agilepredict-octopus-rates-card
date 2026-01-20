@@ -1,5 +1,3 @@
-STEP 3 — README.md content (copy/paste everything)
-
 # AgilePredict Forecast Rates Card (Octopus-style) for Home Assistant
 
 Show AgilePredict predicted half-hour electricity rates (up to 7 days) in Home Assistant using the **Octopus Energy Rates Card** look + colour thresholds, with a **day selector** (left/right).
@@ -8,45 +6,43 @@ Show AgilePredict predicted half-hour electricity rates (up to 7 days) in Home A
 
 ## Prerequisites
 
-### 1) HACS (recommended)
+### Home Assistant
+- YAML access to your HA config (File editor / VS Code add-on / Samba etc.)
+- Restart capability
+
+### HACS (recommended)
 Install HACS:
 - https://hacs.xyz/
 
-### 2) Install these Frontend (Lovelace) cards via HACS → Frontend
+### Install these cards (HACS → Frontend)
+These are required for the UI:
 
-**Required**
-- Mushroom Cards (for the day selector UI)  
+- **Mushroom Cards** (day selector UI)  
   https://github.com/piitaya/lovelace-mushroom
 
-- Octopus Energy Rates Card (for the coloured “pill” rate display)  
+- **Octopus Energy Rates Card** (Octopus-style coloured rate display)  
   https://github.com/clee/home-assistant-octopus-energy-rates-card
 
-### 3) API used
-This guide uses the public forecast endpoint:
+### Data source
+This uses a public forecast endpoint:
 - https://prices.fly.dev/api/A
 
 ---
 
-## What this creates
+## Install (recommended): Package file + Lovelace card
 
-### Helper
-- `input_number.agile_predict_day_offset` (0–7)
+### 1) Enable packages (configuration.yaml)
 
-### Sensors
-- `sensor.agile_predict` (REST sensor, attributes include `prices`)
-- `sensor.agilepredict_selected_day` (48 half-hours for selected day, attributes include `prices`)
-- `sensor.agilepredict_rates_selected_day` (Octopus-card compatible entity, attributes include `rate` and `rates`)
+If you **already** use packages, skip this step.
 
----
-
-## Install (recommended): Home Assistant Package
-
-### Step A — Enable packages in configuration.yaml
-
-If you don’t already have it, add:
-
+Add this to your `configuration.yaml`:
 ```yaml
 homeassistant:
   packages: !include_dir_merge_named packages/
 ```
+
 Restart Home Assistant.
+
+### 2) Copy the package file into your HA config folder
+
+Copy this file from the repo:
