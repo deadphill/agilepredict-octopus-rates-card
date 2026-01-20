@@ -62,10 +62,13 @@ Then restart Home Assistant.
 
 ### 3) Add the Lovelace card
 
-In your dashboard:
+1. Open the file [`lovelace/agilepredict_card.yaml`](lovelace/agilepredict_card.yaml) in this repository
+2. Copy all the YAML content
+3. In your Home Assistant dashboard:
+   - Edit dashboard → Add card → Manual (YAML)
+   - Paste the YAML you copied
+   - Save
 
-1. Edit dashboard → Add card → Manual (YAML)
-2. Paste the contents of: lovelace/agilepredict_card.yaml
 
 ---
 
