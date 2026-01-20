@@ -1,0 +1,50 @@
+type: vertical-stack
+cards:
+  - type: custom:mushroom-chips-card
+    alignment: center
+    chips:
+      - type: action
+        icon: mdi:chevron-left
+        tap_action:
+          action: call-service
+          service: input_number.decrement
+          target:
+            entity_id: input_number.agile_predict_day_offset
+
+      - type: entity
+        entity: sensor.agilepredict_selected_day
+        name: Day
+        icon: mdi:calendar
+
+      - type: action
+        icon: mdi:restore
+        tap_action:
+          action: call-service
+          service: input_number.set_value
+          data:
+            entity_id: input_number.agile_predict_day_offset
+            value: 0
+
+      - type: action
+        icon: mdi:chevron-right
+        tap_action:
+          action: call-service
+          service: input_number.increment
+          target:
+            entity_id: input_number.agile_predict_day_offset
+
+  - type: custom:octopus-energy-rates-card
+    title: AgilePredict Rates (selected day)
+    currentEntity: sensor.agilepredict_rates_selected_day
+    cols: 2
+    hour12: false
+    showday: true
+    showpast: false
+    unitstr: p/kwh
+    lowlimit: 15
+    mediumlimit: 20
+    highlimit: 30
+    roundUnits: 2
+    cheapest: true
+    multiplier: 1
+    cardRefreshIntervalSeconds: 1
