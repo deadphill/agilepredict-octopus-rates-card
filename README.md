@@ -29,7 +29,7 @@ These are required for the UI:
 ### Data source
 
 This uses agile predict which has an API - (https://prices.fly.dev/api_how_to)
-- https://prices.fly.dev/api/A
+- https://prices.fly.dev/api/[enter your region here. See above link to determine your region in octopus]
 
 ---
 
