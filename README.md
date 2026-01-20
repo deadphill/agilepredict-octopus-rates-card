@@ -48,11 +48,15 @@ Save the file and restart Home Assistant.
 
 ### 2) Copy the package file into your HA config folder
 
-Download `packages/agilepredict_octopus_card.yaml` from this repo and copy it to:
+Download the package file:
 
-​```
-config/packages/agilepredict_octopus_card.yaml
-​```
+1. Click here: [`packages/agilepredict_octopus_card.yaml`](packages/agilepredict_octopus_card.yaml)
+2. Click the "Raw" button (or right-click the link above and "Save Link As")
+3. Save the file
+
+Copy the downloaded file to your Home Assistant config folder as:
+
+    config/packages/agilepredict_octopus_card.yaml
 
 Then restart Home Assistant.
 
@@ -61,7 +65,7 @@ Then restart Home Assistant.
 In your dashboard:
 
 1. Edit dashboard → Add card → Manual (YAML)
-2. Paste the contents of: `lovelace/agilepredict_card.yaml`
+2. Paste the contents of: lovelace/agilepredict_card.yaml
 
 ---
 
@@ -69,13 +73,13 @@ In your dashboard:
 
 ### Helper
 
-- `input_number.agile_predict_day_offset` (0–7)
+- input_number.agile_predict_day_offset (0–7)
 
 ### Sensors
 
-- `sensor.agile_predict` (REST sensor, attribute `prices`)
-- `sensor.agilepredict_selected_day` (selected day, attribute `prices` = 48 half-hours)
-- `sensor.agilepredict_rates_selected_day` (Octopus-card compatible, attributes include `rate` and `rates`)
+- sensor.agile_predict (REST sensor, attribute prices)
+- sensor.agilepredict_selected_day (selected day, attribute prices = 48 half-hours)
+- sensor.agilepredict_rates_selected_day (Octopus-card compatible, attributes include rate and rates)
 
 ---
 
@@ -83,15 +87,11 @@ In your dashboard:
 
 ### The card doesn't feel "instant" when changing day
 
-Set `cardRefreshIntervalSeconds: 1` in the Lovelace card YAML.
+Set cardRefreshIntervalSeconds: 1 in the Lovelace card YAML.
 
 ### Sensor goes unavailable sometimes
 
-The REST sensor includes:
-- `timeout: 30`
-- `scan_interval: 900`
-
-to reduce flapping.
+The REST sensor includes timeout: 30 and scan_interval: 900 to reduce flapping.
 
 ---
 
