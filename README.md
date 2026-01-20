@@ -24,7 +24,7 @@ These are required for the UI:
   https://github.com/piitaya/lovelace-mushroom
 
 - **Octopus Energy Rates Card** (Octopus-style coloured rate display)  
-  [https://github.com/clee/home-assistant-octopus-energy-rates-card]
+  https://github.com/clee/home-assistant-octopus-energy-rates-card
 
 ### Data source
 
