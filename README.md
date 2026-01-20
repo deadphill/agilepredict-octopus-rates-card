@@ -39,14 +39,12 @@ This uses agile predict which has an API - (https://prices.fly.dev/api_how_to)
 
 If you **already** use packages, skip this step.
 
-Add this to your `configuration.yaml`:
+Edit your configuration.yaml file and add the following:
 
-​```yaml
-homeassistant:
-  packages: !include_dir_merge_named packages/
-​```
+    homeassistant:
+      packages: !include_dir_merge_named packages/
 
-Then restart Home Assistant.
+Save the file and restart Home Assistant.
 
 ### 2) Copy the package file into your HA config folder
 
