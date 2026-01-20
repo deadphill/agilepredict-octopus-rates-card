@@ -28,7 +28,7 @@ These are required for the UI:
 
 ### Data source
 
-This uses a public forecast endpoint:
+This uses agile predict which has an API - (https://prices.fly.dev/api_how_to)
 - https://prices.fly.dev/api/A
 
 ---
